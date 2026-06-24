@@ -1,28 +1,334 @@
 :root {
-  /* ─── Paleta de colores ─────────────────────────
-     TODO: Podés cambiar estos valores para personalizar
-     el tema de tu restaurante
-  ─────────────────────────────────────────────── */
-  --color-primario:    #2C3E50;
-  --color-secundario:  #E67E22;
-  --color-fondo:       #FAF8F5;
-  --color-texto:       #333333;
-  --color-claro:       #FFFFFF;
-  --color-reserva-vip: #FFF3CD; /* fondo para grupos de 6+ personas */
+  --color-primario: #2c1b13;
+  --color-secundario: #b86b35;
+  --color-acento: #d9a441;
+  --color-fondo: #fbf7f1;
+  --color-texto: #302822;
+  --color-suave: #fffaf3;
+  --color-claro: #ffffff;
+  --color-borde: #ead8c4;
+  --color-error: #b3261e;
+  --color-exito: #1f7a43;
+  --color-reserva-vip: #fff1c7;
 
   --fuente-titulo: 'Playfair Display', serif;
   --fuente-cuerpo: 'Lato', sans-serif;
 }
 
-/* ─── RESET Y BASE ─── */
+/* Reset básico para evitar diferencias entre navegadores */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* Estilos generales del documento */
 body {
   font-family: var(--fuente-cuerpo);
   background-color: var(--color-fondo);
   color: var(--color-texto);
+  line-height: 1.6;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--fuente-titulo);
+  color: var(--color-primario);
+}
+
+/* Encabezado principal */
+.encabezado {
+  padding: 70px 0;
+  text-align: center;
+  color: var(--color-claro);
+  background: linear-gradient(
+    135deg,
+    rgba(44, 27, 19, 0.96),
+    rgba(184, 107, 53, 0.9)
+  );
+}
+
+.encabezado h1 {
+  margin-bottom: 14px;
+  font-size: clamp(2.2rem, 5vw, 4.2rem);
+  color: var(--color-claro);
+}
+
+.etiqueta-restaurante,
+.subtitulo-seccion {
+  margin-bottom: 8px;
+  color: var(--color-acento);
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.descripcion-principal {
+  max-width: 720px;
+  margin: 0 auto;
+  font-size: 1.1rem;
+}
+
+/* Botones para filtrar las categorías del menú */
+.grupo-filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.btn-filtro,
+.btn-reservar {
+  border: none;
+  border-radius: 999px;
+  font-weight: 700;
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.btn-filtro {
+  padding: 9px 16px;
+  background-color: var(--color-claro);
+  color: var(--color-primario);
+  border: 1px solid var(--color-borde);
+}
+
+.btn-filtro:hover,
+.btn-filtro.activo {
+  background-color: var(--color-secundario);
+  color: var(--color-claro);
+  transform: translateY(-2px);
+}
+
+/* 
+  Clase obligatoria:
+  .card-plato
+
+  Se aplica a cada tarjeta creada dinámicamente desde JavaScript.
+*/
+.card-plato {
+  height: 100%;
+  padding: 18px;
+  background-color: var(--color-claro);
+  border: 1px solid var(--color-borde);
+  border-radius: 22px;
+  box-shadow: 0 14px 35px rgba(44, 27, 19, 0.08);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  overflow: hidden;
+}
+
+.card-plato:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 18px 42px rgba(44, 27, 19, 0.14);
+}
+
+.card-plato h3 {
+  margin-bottom: 10px;
+  font-size: 1.45rem;
+}
+
+.card-plato p {
+  margin-bottom: 12px;
+}
+
+/* Imagen de cada platillo dentro de la card */
+.imagen-plato {
+  display: block;
+  width: 100%;
+  height: 190px;
+  margin-bottom: 18px;
+  object-fit: cover;
+  border-radius: 18px;
+}
+
+/* Etiqueta de categoría del platillo */
+.categoria-plato {
+  display: inline-block;
+  margin-bottom: 14px;
+  padding: 5px 12px;
+  color: var(--color-secundario);
+  background-color: #fff2df;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+/* Precio del platillo */
+.precio-plato {
+  color: var(--color-primario);
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+/* Contenedores visuales para formulario y tabla */
+.panel-formulario,
+.panel-tabla {
+  height: 100%;
+  padding: 28px;
+  background-color: var(--color-claro);
+  border: 1px solid var(--color-borde);
+  border-radius: 24px;
+  box-shadow: 0 14px 35px rgba(44, 27, 19, 0.08);
+}
+
+.texto-ayuda {
+  margin-bottom: 22px;
+  color: #6d625b;
+}
+
+.form-label {
+  font-weight: 700;
+}
+
+.form-control,
+.form-select {
+  border-color: var(--color-borde);
+  border-radius: 12px;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--color-secundario);
+  box-shadow: 0 0 0 0.2rem rgba(184, 107, 53, 0.18);
+}
+
+/* 
+  Clase obligatoria:
+  .error-campo
+
+  Se utiliza para mostrar errores debajo de cada input.
+*/
+.error-campo {
+  display: block;
+  min-height: 20px;
+  margin-top: 5px;
+  color: var(--color-error);
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+/* Clase complementaria para resaltar campos inválidos */
+.campo-invalido {
+  border-color: var(--color-error);
+}
+
+/* Botón principal del formulario */
+.btn-reservar {
+  width: 100%;
+  padding: 12px 18px;
+  color: var(--color-claro);
+  background-color: var(--color-secundario);
+}
+
+.btn-reservar:hover:not(:disabled) {
+  background-color: var(--color-primario);
+  transform: translateY(-2px);
+}
+
+.btn-reservar:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+/* Mensaje mostrado al registrar una reserva correctamente */
+.mensaje-confirmacion {
+  min-height: 24px;
+  margin-top: 16px;
+  color: var(--color-exito);
+  font-weight: 700;
+}
+
+/* Tabla de reservas */
+.tabla-reservas thead th {
+  color: var(--color-claro);
+  background-color: var(--color-primario);
+}
+
+/* 
+  Clase obligatoria:
+  .fila-reserva
+
+  Se asigna a cada fila agregada dinámicamente a la tabla.
+*/
+.fila-reserva {
+  background-color: var(--color-suave);
+}
+
+.fila-reserva td {
+  border-color: var(--color-borde);
+}
+
+/* Clase para reservas con 6 o más personas */
+.reserva-grupo-grande {
+  background-color: var(--color-reserva-vip);
+  font-weight: 700;
+}
+
+/* 
+  Clase obligatoria:
+  .resumen-reservas
+
+  Contenedor del resumen dinámico de reservas.
+*/
+.resumen-reservas {
+  margin-top: 20px;
+  padding: 18px;
+  background-color: var(--color-suave);
+  border: 1px solid var(--color-borde);
+  border-left: 6px solid var(--color-secundario);
+  border-radius: 18px;
+}
+
+.resumen-reservas p {
+  margin-bottom: 8px;
+}
+
+.resumen-reservas p:last-child {
+  margin-bottom: 0;
+}
+
+/* Pie de página */
+.pie-pagina {
+  margin-top: 50px;
+  padding: 25px 0;
+  text-align: center;
+  color: var(--color-claro);
+  background-color: var(--color-primario);
+}
+
+.pie-pagina p {
+  margin: 0;
+}
+
+/* Diseño responsive para pantallas pequeñas */
+@media (max-width: 768px) {
+  .encabezado {
+    padding: 50px 0;
+  }
+
+  .grupo-filtros,
+  .btn-filtro {
+    width: 100%;
+  }
+
+  .btn-filtro {
+    text-align: center;
+  }
+
+  .panel-formulario,
+  .panel-tabla {
+    padding: 22px;
+  }
+
+  .tabla-reservas {
+    font-size: 0.9rem;
+  }
+
+  .imagen-plato {
+    height: 170px;
+  }
 }

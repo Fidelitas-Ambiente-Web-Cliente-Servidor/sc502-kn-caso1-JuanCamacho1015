@@ -1,28 +1,218 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <!-- 
+    Proyecto: Sistema Web de Restaurante Ficticio
+    Curso: Ambiente Web Cliente Servidor
+    Descripción:
+    Página única desarrollada con HTML5, CSS3 y JavaScript puro.
+    Permite visualizar un menú dinámico y registrar reservas.
+  -->
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Restaurante Ficticio</title>
 
-  <!-- Bootstrap CSS -->
+  <title>Restaurante Ficticio | Sistema de Reservas</title>
+
+  <!-- Bootstrap se utiliza únicamente para grillas y layout responsive -->
   <link
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
     rel="stylesheet"
   />
 
-  <!-- Google Fonts -->
+  <!-- Fuente decorativa para títulos y fuente legible para el contenido -->
   <link
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400;700&display=swap"
     rel="stylesheet"
   />
 
-  <!-- Estilos propios -->
+  <!-- Hoja de estilos propia del proyecto -->
   <link rel="stylesheet" href="css/style.css" />
 </head>
+
 <body>
+  <!-- Encabezado principal del sitio -->
+  <header class="encabezado">
+    <div class="container">
+      <p class="etiqueta-restaurante">Restaurante Ficticio</p>
+      <h1>La Terraza del Sabor</h1>
+      <p class="descripcion-principal">
+        Sistema web para mostrar un menú dinámico y registrar reservas mediante
+        validaciones realizadas con JavaScript puro.
+      </p>
+    </div>
+  </header>
 
+  <main class="container my-5">
+    <!-- 
+      Sección 1: Menú del restaurante.
+      Las cards de los platillos no se escriben directamente en HTML.
+      Se generan desde JavaScript utilizando el array de objetos.
+    -->
+    <section class="seccion-menu mb-5" aria-labelledby="titulo-menu">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+        <div>
+          <p class="subtitulo-seccion">Nuestra carta</p>
+          <h2 id="titulo-menu">Menú del Restaurante</h2>
+        </div>
+
+        <!-- Botones de filtrado por categoría -->
+        <div class="grupo-filtros" aria-label="Filtros del menú">
+          <button type="button" class="btn-filtro activo" data-categoria="Todos">
+            Todos
+          </button>
+
+          <button type="button" class="btn-filtro" data-categoria="Entrada">
+            Entradas
+          </button>
+
+          <button type="button" class="btn-filtro" data-categoria="Plato Fuerte">
+            Platos Fuertes
+          </button>
+
+          <button type="button" class="btn-filtro" data-categoria="Postre">
+            Postres
+          </button>
+        </div>
+      </div>
+
+      <!-- Contenedor donde JavaScript renderiza dinámicamente los platillos -->
+      <div id="contenedor-menu" class="row g-4"></div>
+    </section>
+
+    <!-- 
+      Sección 2: Formulario de reservas y tabla dinámica.
+      Los mensajes de error y confirmación se muestran directamente en el DOM.
+    -->
+    <section class="seccion-reservas" aria-labelledby="titulo-reservas">
+      <div class="row g-4">
+        <!-- Columna izquierda: formulario -->
+        <div class="col-lg-5">
+          <div class="panel-formulario">
+            <p class="subtitulo-seccion">Reserva tu espacio</p>
+            <h2 id="titulo-reservas">Formulario de Reservas</h2>
+
+            <p class="texto-ayuda">
+              Complete los campos obligatorios. El botón de registro se activa
+              únicamente cuando la información ingresada es válida.
+            </p>
+
+            <form id="form-reserva" novalidate>
+              <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre completo</label>
+                <input
+                  type="text"
+                  id="nombre"
+                  class="form-control"
+                  autocomplete="name"
+                />
+                <span id="error-nombre" class="error-campo"></span>
+              </div>
+
+              <div class="mb-3">
+                <label for="correo" class="form-label">Correo electrónico</label>
+                <input
+                  type="email"
+                  id="correo"
+                  class="form-control"
+                  autocomplete="email"
+                />
+                <span id="error-correo" class="error-campo"></span>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="fecha" class="form-label">Fecha de reserva</label>
+                  <input type="date" id="fecha" class="form-control" />
+                  <span id="error-fecha" class="error-campo"></span>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                  <label for="hora" class="form-label">Hora</label>
+                  <select id="hora" class="form-select">
+                    <option value="">Seleccione</option>
+                    <option value="12:00">12:00</option>
+                    <option value="13:00">13:00</option>
+                    <option value="18:00">18:00</option>
+                    <option value="19:00">19:00</option>
+                    <option value="20:00">20:00</option>
+                  </select>
+                  <span id="error-hora" class="error-campo"></span>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="personas" class="form-label">Número de personas</label>
+                <input
+                  type="number"
+                  id="personas"
+                  class="form-control"
+                  min="1"
+                  max="20"
+                />
+                <span id="error-personas" class="error-campo"></span>
+              </div>
+
+              <div class="mb-4">
+                <label for="comentarios" class="form-label">Comentarios</label>
+                <textarea
+                  id="comentarios"
+                  class="form-control"
+                  rows="3"
+                  placeholder="Opcional"
+                ></textarea>
+              </div>
+
+              <button type="submit" id="btn-reservar" class="btn-reservar" disabled>
+                Registrar reserva
+              </button>
+
+              <p id="mensaje-confirmacion" class="mensaje-confirmacion" aria-live="polite"></p>
+            </form>
+          </div>
+        </div>
+
+        <!-- Columna derecha: tabla y resumen -->
+        <div class="col-lg-7">
+          <div class="panel-tabla">
+            <h2>Reservas registradas</h2>
+
+            <div class="table-responsive">
+              <table class="table align-middle tabla-reservas">
+                <thead>
+                  <tr>
+                    <th>Nombre</th>
+                    <th>Correo</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Personas</th>
+                  </tr>
+                </thead>
+
+                <tbody id="tabla-reservas-body">
+                  <!-- Las reservas se agregan aquí desde JavaScript -->
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Resumen actualizado por la función actualizarResumen() -->
+            <div id="resumen-reservas" class="resumen-reservas"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Pie de página con descripción académica del proyecto -->
+  <footer class="pie-pagina">
+    <div class="container">
+      <p>
+        Proyecto académico desarrollado con HTML5, CSS3 y JavaScript puro.
+      </p>
+    </div>
+  </footer>
+
+  <!-- Archivo JavaScript externo por instrucciones -->
   <script src="js/app.js"></script>
-
 </body>
 </html>
